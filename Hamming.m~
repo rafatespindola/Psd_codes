@@ -1,0 +1,64 @@
+% Passa faixa
+
+clear all
+close all
+clc
+
+fa = 50e3;
+As = 50;
+Ap = 0.2;
+
+wp1 = 0.1*pi; ws1 = 0.2*pi;
+wp2 = 0.3*pi; ws2 = 0.4*pi;
+
+wc1 = sqrt(wp1*ws1);
+wc2 = sqrt(wp2*ws2);
+
+teta_p1 = ((wp1/(2*pi))*2)/fa; % teta = fp/(fa/2)
+teta_s1 = ((ws1/(2*pi))*2)/fa;
+teta_p2 = ((wp1/(2*pi))*2)/fa; % teta = fp/(fa/2)
+teta_s2 = ((ws1/(2*pi))*2)/fa;
+teta_c1 = sqrt(teta_p1*teta_s1);
+teta_c2 = sqrt(teta_p2*teta_s2);
+
+ordem = 10
+M = ordem/2;
+n = -M:M;
+n_medido = ordem;
+
+w_hamm = 0.54 + 0.46*cos((2*pi.*n)/(2*M + 1));
+w_han = 0.5 + 0.5*cos((2*pi.*n)/(2*M + 1));
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+fp = 10e3;
+fs = 15e3;
+fa = 50e3; %Frequencia de amostragem
+
+wa = 2*pi*fa;
+ws = 2*pi*fs;
+wp = 2*pi*fp;
+wc = sqrt(ws*wp); 
+
+teta_c = wc/(wa/2);
+
+ordem = 100;
+M = ordem/2;
+n = -M:M;
+w_n = 0.54 + 0.46*cos((2*pi*n)/(2*M + 1));
+w_han = 0.5 + 0.5*cos((2*pi*n)/(2*M + 1));
+clp = sin(teta_c.*pi.*n)./(pi*n);
+clp(M+1) = teta_c;
+hamming = w_n.*clp;
+han = w_han.*clp;
+fvtool(han, 1, hamming, 1, clp,1);
+legend('Hanning', 'Hamming', 'Retangular')
+
+
+
+
+
+
+
+
+
